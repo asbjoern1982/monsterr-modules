@@ -4,6 +4,7 @@ import {DatabaseHandler} from '../../../database/DatabaseHandler'
 export default {
   commands: {},
   events: {
+    // for testing, it just starts the first stage whenever someone connects and push them back into the stage if they reconnect
     [Events.CLIENT_RECONNECTED]: (server, clientId) => {
       setTimeout(() => {
         let stageNo = server.getCurrentStage().number

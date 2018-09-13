@@ -37,5 +37,3 @@ const monsterr = createServer({
 })
 
 monsterr.run()
-
-console.log(DatabaseHandler.exportAsCSV())

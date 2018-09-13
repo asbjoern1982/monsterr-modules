@@ -17,13 +17,35 @@ let createDatabaseHandler = () => {
 
   let exportAsJSON = () => {
     let surveys = db.get('surveys').value()
-    console.log(surveys)
     return surveys
+  }
+
+  let exportAsCSV = () => {
+    let surveys = db.get('surveys').value()
+    // get a list of headers (questions)
+    let headers = [...new Set([].concat(...surveys.map(survey => Object.keys(survey.survey))))].sort()
+
+    // for each survey, add id, time and questions, if it is not present,
+    // it just adds ',' so the columns are presisent and multiple answers are
+    // put into quotes
+    return 'clientId,time,' + headers.join() + '\n' +
+      surveys.map(survey =>
+        survey['id'] + ',' +
+        survey['time'] + ',' +
+        headers.map((header) =>
+          survey.survey[header]
+            ? (Array.isArray(survey.survey[header])
+              ? '"' + survey.survey[header].join() + '"'
+              : survey.survey[header])
+            : ''
+        ).join()
+      ).join('\n')
   }
 
   return {
     saveSurvey,
-    exportAsJSON
+    exportAsJSON,
+    exportAsCSV
   }
 }
 

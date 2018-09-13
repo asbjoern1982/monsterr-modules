@@ -6,7 +6,7 @@
       "survey": {
         "question1": "item1",
         "question2": 27,
-        "question3": "item1",
+        "question4": "item1",
         "question5": [
           "item3"
         ]
@@ -20,7 +20,8 @@
         "question2": 25,
         "question3": "item1",
         "question5": [
-          "item1"
+          "item1",
+          "item3"
         ]
       }
     }

@@ -15,6 +15,10 @@ let commands = {
   'reqJSON': (server, clientId) => {
     let json = DatabaseHandler.exportAsJSON()
     server.send('resJSON', json).toAdmin()
+  },
+  'reqCSV': (server, clientId) => {
+    let csv = DatabaseHandler.exportAsCSV()
+    server.send('resCSV', csv).toAdmin()
   }
 }
 LatencyModule.addServerCommands(commands)
@@ -33,3 +37,5 @@ const monsterr = createServer({
 })
 
 monsterr.run()
+
+console.log(DatabaseHandler.exportAsCSV())

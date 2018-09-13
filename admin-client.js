@@ -8,7 +8,7 @@ import './src/admin/admin-client.css'
 
 let options = {
   canvasBackgroundColor: 'red',
-  htmlContainerHeight: 0.5,
+  htmlContainerHeight: 0.4,
   // HTML is included in options for admin
   html
 }
@@ -18,6 +18,17 @@ let events = {
     let fileName = 'monsterr-modules_' + Date.now() + '.csv'
     let data = JSON.stringify(json)
     let url = window.URL.createObjectURL(new Blob([data], {type: 'text/json'}))
+    var a = document.createElement('a')
+    document.body.appendChild(a)
+    a.style = 'display: none'
+    a.href = url
+    a.download = fileName
+    a.click()
+    window.URL.revokeObjectURL(url)
+  },
+  'resCSV': (admin, csv) => {
+    let fileName = 'monsterr-modules_' + Date.now() + '.csv'
+    let url = window.URL.createObjectURL(new Blob([csv], {type: 'text/csv'}))
     var a = document.createElement('a')
     document.body.appendChild(a)
     a.style = 'display: none'
@@ -49,9 +60,13 @@ $('#admin-button-reset').mouseup(e => {
   e.preventDefault()
   admin.sendCommand('reset')
 })
-$('#admin-button-download').mouseup(e => {
+$('#admin-button-download-json').mouseup(e => {
   e.preventDefault()
   admin.sendCommand('reqJSON')
+})
+$('#admin-button-download-csv').mouseup(e => {
+  e.preventDefault()
+  admin.sendCommand('reqCSV')
 })
 
 LatencyModule.setupClient(admin)

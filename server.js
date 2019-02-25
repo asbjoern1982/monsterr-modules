@@ -1,6 +1,7 @@
 import createServer, { Network, Events } from 'monsterr'
 import {LatencyModule} from './src/modules/LatencyModule'
 import {NetworkModule} from './src/modules/NetworkModule'
+import {CPUModule} from './src/modules/CPUModule'
 import survey from './src/stages/survey/server/server'
 import {DatabaseHandler} from './src/database/DatabaseHandler'
 
@@ -24,6 +25,7 @@ let commands = {
 LatencyModule.addServerCommands(commands)
 let network = Network.pairs(8)
 NetworkModule.addServerCommands(commands, network)
+CPUModule.addServerEvents(events)
 
 const monsterr = createServer({
   network: network,

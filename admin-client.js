@@ -2,6 +2,7 @@
 import createClient from 'monsterr'
 import {LatencyModule} from './src/modules/LatencyModule'
 import {NetworkModule} from './src/modules/NetworkModule'
+import {CPUModule} from './src/modules/CPUModule'
 
 import html from './src/admin/admin-client.html'
 import './src/admin/admin-client.css'
@@ -41,6 +42,7 @@ let events = {
 let commands = {}
 LatencyModule.addAdminClientEvents(events)
 NetworkModule.addAdminClientEvents(events)
+CPUModule.addAdminClientEvents(events)
 
 const admin = createClient({
   events,
@@ -71,3 +73,4 @@ $('#admin-button-download-csv').mouseup(e => {
 
 LatencyModule.setupClient(admin)
 NetworkModule.setupClient(admin)
+CPUModule.setupAdminClient(events)

@@ -30,11 +30,11 @@ let createLatencyModule = () => {
 
   let addHTML = (admin) => {
     // inject the html in the page
-    let htmlGraph = '<div class="col-sm" style="border: 1px solid lightgray; height: 300px; width: 300px;"><div id="latencygraphtitle">Latency Graph</div><canvas id="latencygraph"></canvas></div>'
+    let htmlGraph = '<div class="col-lg-6 col-xl-4" style="border: 1px solid lightgray; height: 300px; padding-bottom: 30px;"><div id="latencygraphtitle">Latency Graph</div><canvas id="latencygraph"></canvas></div>'
     if ($('#graphs').length) {
       $('#graphs').append(htmlGraph)
     } else {
-      $('#admin').append('<div class="container"><div class="row" id="graphs">' + htmlGraph + '</div></div>')
+      $('#admin').append('<div class="container"><div class="row" style="background-color: white;" id="graphs">' + htmlGraph + '</div></div>')
     }
   }
 
@@ -56,8 +56,8 @@ let createLatencyModule = () => {
         maintainAspectRatio: false,
         responsive: true,
         animation: {
-          duration: 0, // faster animations
-          easing: 'linear'
+          duration: 100, // faster animations
+          easing: 'easeInOutBack'
         },
         scales: {
           yAxes: [{
@@ -90,23 +90,25 @@ let createLatencyModule = () => {
         console.log('chart not initialized, please run "setupClient(admin)" before running the adminClient')
         return
       }
-      let dataset = []
-      let colorCount = 0
-      for (let key in latencies) {
-        let color = colorCount < colors.length ? colors[colorCount] : 'rgb(0, 0, 0)'
-        colorCount++
-        dataset.push({
-          label: key,
-          borderColor: color,
-          data: latencies[key].data.reverse()
+
+      if (!chart.data.datasets || Object.keys(latencies).length != chart.data.datasets.length) {
+        let newdatasets = []
+        let colorCount = 0
+        for (let key in latencies) {
+          let color = colorCount < colors.length ? colors[colorCount] : 'rgb(0, 0, 0)'
+          colorCount++
+          newdatasets.push({
+            label: key,
+            borderColor: color,
+            data: latencies[key].data.reverse()
+          })
+        }
+        chart.data.datasets = newdatasets
+      } else {
+        chart.data.datasets.forEach(dataset => {
+          dataset.data = latencies[dataset.label].data.reverse()
         })
       }
-      // the problem is that the graph is not moving, but each datapoints position is shifted
-      /* if (chart.data.datasets.count > 6) {
-        chart.data.datasets.pop()
-      }
-      chart.data.datasets.push(dataset[0]) */
-      chart.data.datasets = dataset
       chart.update()
     }
   }

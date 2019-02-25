@@ -1,4 +1,5 @@
 import createClient from 'monsterr'
+import {CPUModule} from './src/modules/CPUModule'
 import survey from './src/stages/survey/client/client'
 
 const stages = [survey]
@@ -11,9 +12,10 @@ let options = {
 let events = {}
 let commands = {}
 
-createClient({
+let client = createClient({
   events,
   commands,
   options,
   stages
 })
+CPUModule.setupClient(client)
